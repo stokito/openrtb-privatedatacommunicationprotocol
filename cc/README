@@ -1,0 +1,9 @@
+Private Data Communication Protocol
+
+Files:
+decrypter.cc - source file containing sample code for decryption algorithm.
+Makefile - contains commands to build and run the decrypter.
+../COPYING - A copy of the Apache License that governs the use of included code.
+
+This code is known to compile on x86_64-linux-gnu with gcc version 4.6.3.
+It depends on the openssl library.
