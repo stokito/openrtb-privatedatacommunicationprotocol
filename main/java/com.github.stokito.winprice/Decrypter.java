@@ -190,10 +190,9 @@ public class Decrypter {
         (byte) 0x77, (byte) 0x92
     };
     String websafeB64EncodedCiphertext = "SjpvRwAB4kB7jEpgW5IA8p73ew9ic6VZpFsPnA";
-    String b64EncodedCiphertext = unWebSafeAndPad(websafeB64EncodedCiphertext);
 
-    byte[] codeString = Base64.getDecoder().decode(
-        b64EncodedCiphertext.getBytes(US_ASCII));
+    byte[] codeString = Base64.getUrlDecoder().decode(
+            websafeB64EncodedCiphertext.getBytes(US_ASCII));
 
     byte[] plaintext;
     SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "HmacSHA1");
