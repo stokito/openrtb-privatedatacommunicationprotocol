@@ -5,7 +5,6 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.Base64;
@@ -27,7 +26,7 @@ public class Main {
      *     handle big endian vs. little endian issue.
      */
     public static void testWinningPrice()
-            throws IOException, UnsupportedEncodingException {
+            throws IOException {
         byte[] encryptionKeyBytes = {
                 (byte) 0xb0, (byte) 0x8c, (byte) 0x70, (byte) 0xcf, (byte) 0xbc,
                 (byte) 0xb0, (byte) 0xeb, (byte) 0x6c, (byte) 0xab, (byte) 0x7e,
@@ -77,7 +76,7 @@ public class Main {
     // of variable length. After decrypting the encrypted byte array, you can
     // deserialize the cleartext into protocol buffer.
     public static void testByteArray()
-            throws IOException, UnsupportedEncodingException {
+            throws IOException {
         final byte[] encryptionKeyBytes = {
                 (byte) 0x02, (byte) 0xEE, (byte) 0xa8, (byte) 0x3c, (byte) 0x6c,
                 (byte) 0x12, (byte) 0x11, (byte) 0xe1, (byte) 0x0b, (byte) 0x9f,
@@ -104,7 +103,7 @@ public class Main {
                     Decrypter.decrypt(long_ciphertext, encryptionKey, integrityKey);
 
             final int expected_length = 6398;
-            if (plaintext == null || plaintext.length != expected_length) {
+            if (plaintext.length != expected_length) {
                 System.err.println("Error. Expected plain text length: " + expected_length +
                         ". Actual length: " + plaintext.length);
                 return;
@@ -128,7 +127,7 @@ public class Main {
     }
 
     public static void main(String[] args)
-            throws IOException, UnsupportedEncodingException {
+            throws IOException {
         testWinningPrice();
         testByteArray();
     }
