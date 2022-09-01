@@ -15,6 +15,25 @@ import static com.github.stokito.winprice.Decrypter.getTimeFromInitializationVec
 import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public class Main {
+    static byte[] encryptionKeyBytes = {
+            (byte) 0xb0, (byte) 0x8c, (byte) 0x70, (byte) 0xcf, (byte) 0xbc,
+            (byte) 0xb0, (byte) 0xeb, (byte) 0x6c, (byte) 0xab, (byte) 0x7e,
+            (byte) 0x82, (byte) 0xc6, (byte) 0xb7, (byte) 0x5d, (byte) 0xa5,
+            (byte) 0x20, (byte) 0x72, (byte) 0xae, (byte) 0x62, (byte) 0xb2,
+            (byte) 0xbf, (byte) 0x4b, (byte) 0x99, (byte) 0x0b, (byte) 0xb8,
+            (byte) 0x0a, (byte) 0x48, (byte) 0xd8, (byte) 0x14, (byte) 0x1e,
+            (byte) 0xec, (byte) 0x07
+    };
+    static byte[] integrityKeyBytes = {
+            (byte) 0xbf, (byte) 0x77, (byte) 0xec, (byte) 0x55, (byte) 0xc3,
+            (byte) 0x01, (byte) 0x30, (byte) 0xc1, (byte) 0xd8, (byte) 0xcd,
+            (byte) 0x18, (byte) 0x62, (byte) 0xed, (byte) 0x2a, (byte) 0x4c,
+            (byte) 0xd2, (byte) 0xc7, (byte) 0x6a, (byte) 0xc3, (byte) 0x3b,
+            (byte) 0xc0, (byte) 0xc4, (byte) 0xce, (byte) 0x8a, (byte) 0x3d,
+            (byte) 0x3b, (byte) 0xbd, (byte) 0x3a, (byte) 0xd5, (byte) 0x68,
+            (byte) 0x77, (byte) 0x92
+    };
+    static String websafeB64EncodedCiphertext = "SjpvRwAB4kB7jEpgW5IA8p73ew9ic6VZpFsPnA";
 
     /**
      * Uses hardcoded keys to decrypt an example encoded ciphertext string.
@@ -27,25 +46,6 @@ public class Main {
      */
     public static void testWinningPrice()
             throws IOException {
-        byte[] encryptionKeyBytes = {
-                (byte) 0xb0, (byte) 0x8c, (byte) 0x70, (byte) 0xcf, (byte) 0xbc,
-                (byte) 0xb0, (byte) 0xeb, (byte) 0x6c, (byte) 0xab, (byte) 0x7e,
-                (byte) 0x82, (byte) 0xc6, (byte) 0xb7, (byte) 0x5d, (byte) 0xa5,
-                (byte) 0x20, (byte) 0x72, (byte) 0xae, (byte) 0x62, (byte) 0xb2,
-                (byte) 0xbf, (byte) 0x4b, (byte) 0x99, (byte) 0x0b, (byte) 0xb8,
-                (byte) 0x0a, (byte) 0x48, (byte) 0xd8, (byte) 0x14, (byte) 0x1e,
-                (byte) 0xec, (byte) 0x07
-        };
-        byte[] integrityKeyBytes = {
-                (byte) 0xbf, (byte) 0x77, (byte) 0xec, (byte) 0x55, (byte) 0xc3,
-                (byte) 0x01, (byte) 0x30, (byte) 0xc1, (byte) 0xd8, (byte) 0xcd,
-                (byte) 0x18, (byte) 0x62, (byte) 0xed, (byte) 0x2a, (byte) 0x4c,
-                (byte) 0xd2, (byte) 0xc7, (byte) 0x6a, (byte) 0xc3, (byte) 0x3b,
-                (byte) 0xc0, (byte) 0xc4, (byte) 0xce, (byte) 0x8a, (byte) 0x3d,
-                (byte) 0x3b, (byte) 0xbd, (byte) 0x3a, (byte) 0xd5, (byte) 0x68,
-                (byte) 0x77, (byte) 0x92
-        };
-        String websafeB64EncodedCiphertext = "SjpvRwAB4kB7jEpgW5IA8p73ew9ic6VZpFsPnA";
 
         byte[] codeString = Base64.getUrlDecoder().decode(
                 websafeB64EncodedCiphertext.getBytes(US_ASCII));
@@ -59,6 +59,10 @@ public class Main {
             System.err.println("Failed to decode ciphertext. " + e.getMessage());
             return;
         }
+        assertDecrypted(codeString, plaintext);
+    }
+
+    private static void assertDecrypted(byte[] codeString, byte[] plaintext) throws IOException {
         DataInputStream dis = new DataInputStream(
                 new ByteArrayInputStream(plaintext));
         final long value = dis.readLong();
@@ -75,8 +79,7 @@ public class Main {
     // Decrypt byte array of 6,399 bytes. Hyperlocal targeting signal can be
     // of variable length. After decrypting the encrypted byte array, you can
     // deserialize the cleartext into protocol buffer.
-    public static void testByteArray()
-            throws IOException {
+    public static void testByteArray() {
         final byte[] encryptionKeyBytes = {
                 (byte) 0x02, (byte) 0xEE, (byte) 0xa8, (byte) 0x3c, (byte) 0x6c,
                 (byte) 0x12, (byte) 0x11, (byte) 0xe1, (byte) 0x0b, (byte) 0x9f,
