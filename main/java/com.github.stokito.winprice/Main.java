@@ -12,7 +12,6 @@ import java.util.Date;
 
 import static com.github.stokito.winprice.Decrypter.INITIALIZATION_VECTOR_SIZE;
 import static com.github.stokito.winprice.Decrypter.getTimeFromInitializationVector;
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 public class Main {
     static byte[] encryptionKeyBytes = {
@@ -48,7 +47,7 @@ public class Main {
             throws IOException {
 
         byte[] codeString = Base64.getUrlDecoder().decode(
-                websafeB64EncodedCiphertext.getBytes(US_ASCII));
+                websafeB64EncodedCiphertext);
 
         byte[] plaintext;
         SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "HmacSHA1");
