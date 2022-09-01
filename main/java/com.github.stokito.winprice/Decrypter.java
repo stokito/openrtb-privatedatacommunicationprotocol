@@ -58,20 +58,6 @@ public class Decrypter {
   private static final int BLOCK_SIZE = 20;
 
   /**
-   * Converts from unpadded web safe base 64 encoding (RFC 3548) to standard
-   * base 64 encoding (RFC 2045) and pads the result.
-   */
-  public static String unWebSafeAndPad(String webSafe) {
-    String pad = "";
-    if ((webSafe.length() % 4) == 2) {
-      pad = "==";
-    } else if ((webSafe.length() % 4) == 3) {
-      pad = "=";
-    }
-    return webSafe.replace('-', '+').replace('_', '/') + pad;
-  }
-
-  /**
    * Performs the decryption algorithm.
    *
    * This method decrypts the ciphertext using the encryption key and verifies
