@@ -1,5 +1,7 @@
 # Google OpenRTB Auction price encrypter
 
+Private Data Communication Protocol.
+
 See [Decrypt Price Confirmations](https://developers.google.com/authorized-buyers/rtb/response-guide/decrypt-price)
 More fresh implementation https://github.com/google/openrtb-doubleclick/wiki
 
