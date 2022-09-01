@@ -26,10 +26,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Date;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
+import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * An Exception thrown by Decrypter if the ciphertext cannot successfully be
@@ -189,10 +192,8 @@ public class Decrypter {
     String websafeB64EncodedCiphertext = "SjpvRwAB4kB7jEpgW5IA8p73ew9ic6VZpFsPnA";
     String b64EncodedCiphertext = unWebSafeAndPad(websafeB64EncodedCiphertext);
 
-    // Base 64 decode using Apache commons library. You should replace this
-    // with whatever you use internally.
-    byte[] codeString = Base64.decodeBase64(
-        b64EncodedCiphertext.getBytes("US-ASCII"));
+    byte[] codeString = Base64.getDecoder().decode(
+        b64EncodedCiphertext.getBytes(US_ASCII));
 
     byte[] plaintext;
     SecretKey encryptionKey = new SecretKeySpec(encryptionKeyBytes, "HmacSHA1");
