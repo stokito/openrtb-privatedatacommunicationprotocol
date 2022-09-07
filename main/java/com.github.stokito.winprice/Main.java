@@ -5,10 +5,9 @@ import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.text.DateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Date;
 
 import static com.github.stokito.winprice.Decrypter.INITIALIZATION_VECTOR_SIZE;
 import static com.github.stokito.winprice.Decrypter.getTimeFromInitializationVector;
@@ -67,12 +66,11 @@ public class Main {
         final long value = dis.readLong();
         final byte[] initializationVector =
                 Arrays.copyOf(codeString, INITIALIZATION_VECTOR_SIZE);
-        final Date timestamp = getTimeFromInitializationVector(initializationVector);
+        final Instant timestamp = getTimeFromInitializationVector(initializationVector);
         System.out.println("The value is: " + value + " generated on "
-                + DateFormat.getDateTimeInstance().format(timestamp) + " + "
-                + timestamp.getTime() % 1000);
+                + timestamp.toString());
         System.out.println("    Expected: 709959680 generated on "
-                + "Jun 18, 2009 12:45:59 PM + 123");
+                + "2009-06-18T16:45:59.123Z");
     }
 
     // Decrypt byte array of 6,399 bytes. Hyperlocal targeting signal can be

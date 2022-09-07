@@ -17,22 +17,13 @@ package com.github.stokito.winprice;
 // values. It uses the Base 64 decoder from the Apache commons project
 // (http://commons.apache.org).
 
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.text.DateFormat;
+import java.time.Instant;
 import java.util.Arrays;
-import java.util.Base64;
-import java.util.Date;
-import javax.crypto.Mac;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
-import static java.nio.charset.StandardCharsets.US_ASCII;
 
 /**
  * An Exception thrown by Decrypter if the ciphertext cannot successfully be
@@ -138,11 +129,11 @@ public class Decrypter {
    * precision while the initialization vector contains a timestamp with
    * microsecond precision.
    */
-  public static Date getTimeFromInitializationVector(
+  public static Instant getTimeFromInitializationVector(
       byte[] initializationVector) {
     ByteBuffer buffer = ByteBuffer.wrap(initializationVector);
     long seconds = buffer.getInt();
     long micros = buffer.getInt();
-    return new Date((seconds * 1000) + (micros / 1000));
+    return Instant.ofEpochMilli((seconds * 1000) + (micros / 1000));
   }
 }
